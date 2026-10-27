@@ -65,7 +65,7 @@
 
         input[type="button"] {
             width: 100%;
-            height: 60px;
+            height: 72px;
             font-size: 10px;
             cursor: pointer;
             white-space: pre-wrap;
@@ -77,7 +77,8 @@
             transition: background-color 0.2s, transform 0.05s;
             -webkit-appearance: none;
             appearance: none;
-            padding: 2px;
+            padding: 4px;
+            touch-action: manipulation;
         }
 
         input[type="button"]:active {
@@ -113,7 +114,7 @@
             }
 
             input[type="button"] {
-                height: 72px;
+                height: 78px;
                 font-size: 13px;
             }
 
@@ -310,65 +311,85 @@
         function setupLongPress(button, id) {
             let pressTimer = null;
             let longPressTriggered = false;
-            const LONG_PRESS_TIME = 600;
+            let startX = 0;
+            let startY = 0;
+            let startTime = 0;
+            let moved = false;
+            let pointerActive = false;
 
-            function startPress() {
+            const LONG_PRESS_TIME = 800;
+            const MOVE_THRESHOLD = 12;
+            const TAP_MIN_TIME = 80;
+
+            function clearPressTimer() {
+                if (pressTimer) {
+                    clearTimeout(pressTimer);
+                    pressTimer = null;
+                }
+            }
+
+            button.addEventListener('pointerdown', function(e) {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+                pointerActive = true;
                 longPressTriggered = false;
-                clearTimeout(pressTimer);
+                moved = false;
+                startX = e.clientX;
+                startY = e.clientY;
+                startTime = Date.now();
+
+                clearPressTimer();
+
                 pressTimer = setTimeout(() => {
+                    if (!pointerActive || moved) return;
                     longPressTriggered = true;
                     editCell(id);
                 }, LONG_PRESS_TIME);
-            }
+            });
 
-            function cancelPress() {
-                clearTimeout(pressTimer);
-            }
+            button.addEventListener('pointermove', function(e) {
+                if (!pointerActive) return;
 
-            button.addEventListener('touchstart', function() {
-                startPress();
-            }, { passive: true });
+                const dx = Math.abs(e.clientX - startX);
+                const dy = Math.abs(e.clientY - startY);
 
-            button.addEventListener('touchend', function(e) {
-                clearTimeout(pressTimer);
-
-                if (longPressTriggered) {
-                    e.preventDefault();
-                    longPressTriggered = false;
-                } else {
-                    clicked(id);
+                if (dx > MOVE_THRESHOLD || dy > MOVE_THRESHOLD) {
+                    moved = true;
+                    clearPressTimer();
                 }
             });
 
-            button.addEventListener('touchmove', function() {
-                cancelPress();
-            });
+            button.addEventListener('pointerup', function() {
+                if (!pointerActive) return;
 
-            button.addEventListener('touchcancel', function() {
-                cancelPress();
-            });
+                const pressDuration = Date.now() - startTime;
 
-            button.addEventListener('click', function() {
-                if ('ontouchstart' in window) return;
+                pointerActive = false;
+                clearPressTimer();
+
+                if (longPressTriggered) {
+                    longPressTriggered = false;
+                    return;
+                }
+
+                if (moved) return;
+                if (pressDuration < TAP_MIN_TIME) return;
+
                 clicked(id);
+            });
+
+            button.addEventListener('pointercancel', function() {
+                pointerActive = false;
+                moved = false;
+                longPressTriggered = false;
+                clearPressTimer();
             });
 
             button.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
-                cancelPress();
+                pointerActive = false;
+                clearPressTimer();
                 editCell(id);
-            });
-
-            button.addEventListener('mousedown', function(e) {
-                if (e.button === 0) startPress();
-            });
-
-            button.addEventListener('mouseup', function() {
-                cancelPress();
-            });
-
-            button.addEventListener('mouseleave', function() {
-                cancelPress();
             });
         }
 
