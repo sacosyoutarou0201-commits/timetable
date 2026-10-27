@@ -5,37 +5,224 @@
     <title>欠席・遅刻・早退カウンター</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: sans-serif; padding: 30px; text-align: center; background-color: #f9f9f9; }
-        .form-container { display: inline-block; text-align: left; border: 3px solid #dc3545; padding: 30px; border-radius: 12px; min-width: 360px; background-color: white; box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-        h1 { margin-top: 0; color: #333; font-size: 22px; border-bottom: 2px solid #dc3545; padding-bottom: 10px; text-align: center; }
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 16px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .form-container {
+            display: inline-block;
+            width: 100%;
+            max-width: 420px;
+            text-align: left;
+            border: 3px solid #dc3545;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #333;
+            font-size: 22px;
+            border-bottom: 2px solid #dc3545;
+            padding-bottom: 10px;
+            text-align: center;
+        }
         
-        /* 総合結果のボックス */
-        .total-box { text-align: center; margin: 20px 0; background: #fff5f5; border: 2px solid #feb2b2; padding: 15px; border-radius: 8px; }
-        .total-label { font-size: 15px; color: #e53e3e; font-weight: bold; }
-        .total-value { font-size: 48px; font-weight: bold; margin-top: 5px; color: #dc3545; }
-        .total-unit { font-size: 20px; margin-left: 5px; color: #333; }
+        .total-box {
+            text-align: center;
+            margin: 20px 0;
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            padding: 15px;
+            border-radius: 8px;
+        }
 
-        /* 各種カウントのグリッド表示 */
-        .breakdown-grid { display: flex; gap: 10px; margin-bottom: 25px; }
-        .breakdown-card { flex: 1; background: #f7fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; text-align: center; }
-        .breakdown-label { font-size: 12px; color: #4a5568; font-weight: bold; margin-bottom: 5px; }
-        .breakdown-value { font-size: 24px; font-weight: bold; color: #2d3748; }
+        .total-label {
+            font-size: 15px;
+            color: #e53e3e;
+            font-weight: bold;
+        }
 
-        /* カウンター操作ボタン */
-        .counter-section { margin-bottom: 15px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #edf2f7; }
-        .section-title { font-size: 14px; font-weight: bold; color: #4a5568; margin-bottom: 8px; }
-        .btn-group { display: flex; gap: 10px; }
-        .btn-add { flex: 2; padding: 12px; font-size: 18px; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-sub { flex: 1; padding: 12px; font-size: 14px; color: #4a5568; background-color: #edf2f7; border: 1px solid #cbd5e0; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-add:active, .btn-sub:active { transform: scale(0.97); }
+        .total-value {
+            font-size: 42px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #dc3545;
+            word-break: break-word;
+        }
+
+        .total-unit {
+            font-size: 20px;
+            margin-left: 5px;
+            color: #333;
+        }
+
+        .breakdown-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .breakdown-card {
+            flex: 1;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .breakdown-label {
+            font-size: 12px;
+            color: #4a5568;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .counter-section {
+            margin-bottom: 15px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-add {
+            flex: 2;
+            padding: 12px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-sub {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            color: #4a5568;
+            background-color: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-add:active,
+        .btn-sub:active {
+            transform: scale(0.97);
+        }
         
-        /* ボタンの色分け */
-        .bg-absent { background-color: #dc3545; box-shadow: 0 3px #9b2c2c; }
-        .bg-late { background-color: #dd6b20; box-shadow: 0 3px #9c4221; }
-        .bg-early { background-color: #3182ce; box-shadow: 0 3px #2b6cb0; }
+        .bg-absent {
+            background-color: #dc3545;
+            box-shadow: 0 3px #9b2c2c;
+        }
 
-        .btn-reset { width: 100%; padding: 10px; background-color: #718096; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; margin-top: 15px; }
-        .btn-reset:hover { background-color: #4a5568; }
+        .bg-late {
+            background-color: #dd6b20;
+            box-shadow: 0 3px #9c4221;
+        }
+
+        .bg-early {
+            background-color: #3182ce;
+            box-shadow: 0 3px #2b6cb0;
+        }
+
+        .btn-reset {
+            width: 100%;
+            padding: 10px;
+            background-color: #718096;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .btn-reset:hover {
+            background-color: #4a5568;
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .form-container {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .breakdown-grid {
+                gap: 6px;
+            }
+
+            .breakdown-label {
+                font-size: 11px;
+            }
+
+            .breakdown-value {
+                font-size: 20px;
+            }
+
+            .total-value {
+                font-size: 34px;
+            }
+
+            .total-unit {
+                font-size: 16px;
+            }
+
+            .btn-add {
+                font-size: 16px;
+                padding: 11px;
+            }
+
+            .btn-sub {
+                font-size: 13px;
+                padding: 11px;
+            }
+
+            .section-title {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -44,7 +231,6 @@
         
         <h1 id="subject-title">授業出欠詳細管理</h1>
         
-        <!-- 内訳の回数表示 -->
         <div class="breakdown-grid">
             <div class="breakdown-card">
                 <div class="breakdown-label">欠席回数</div>
@@ -60,13 +246,11 @@
             </div>
         </div>
 
-        <!-- 総合換算時間（時間割ページにも共有される数値） -->
         <div class="total-box">
             <div class="total-label">合計欠席時間（遅刻・早退を除く）</div>
             <div class="total-value"><span id="total-hours">0</span><span class="total-unit">時間分</span></div>
         </div>
 
-        <!-- 各カウント専用の操作ボタンエリア -->
         <div class="counter-section">
             <div class="section-title">❌ 欠席（1回 ＝ 2時間分加算）</div>
             <div class="btn-group">
@@ -96,8 +280,6 @@
 
     <script>
         let currentSubject = "";
-
-        // ★ 欠席時間の換算ルール（1コマ＝2時間分として計算）
         const HOURS_PER_ABSENT = 2;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -114,45 +296,35 @@
             }
         });
 
-        // 画面の表示およびLocalStorageへの保存処理
         function updateDisplay() {
             if (!currentSubject) return;
 
-            // それぞれの回数を個別に取得（無ければ0）
             const absent = parseInt(localStorage.getItem(`att-detail-absent-${currentSubject}`) || 0, 10);
             const late = parseInt(localStorage.getItem(`att-detail-late-${currentSubject}`) || 0, 10);
             const early = parseInt(localStorage.getItem(`att-detail-early-${currentSubject}`) || 0, 10);
 
-            // 画面上の回数表示を更新
             document.getElementById('val-absent').textContent = absent;
             document.getElementById('val-late').textContent = late;
             document.getElementById('val-early').textContent = early;
 
-            // --- 時間計算のロジック ---
-            // 遅刻・早退は含めず、純粋に「欠席回数 × 2時間」のみを合計時間とする
             const totalHours = absent * HOURS_PER_ABSENT;
-
-            // 画面の「時間分」表示を更新
             document.getElementById('total-hours').textContent = totalHours;
 
-            // ★ 時間割ページ（index.html）が読みにいく元のキーに、最終的な「合計時間」を同期保存する
             localStorage.setItem(`att-absent-${currentSubject}`, totalHours);
         }
 
-        // カウントの増減を行う共通関数
         function changeCount(type, num) {
             if (!currentSubject) return;
 
             const key = `att-detail-${type}-${currentSubject}`;
             let currentCount = parseInt(localStorage.getItem(key) || 0, 10);
             
-            currentCount = Math.max(0, currentCount + num); // マイナスにならないように制限
+            currentCount = Math.max(0, currentCount + num);
             localStorage.setItem(key, currentCount);
             
             updateDisplay();
         }
 
-        // リセット処理
         function resetAll() {
             if (!currentSubject) return;
             if (confirm(`【${currentSubject}】のすべての出欠記録をリセットしますか？`)) {

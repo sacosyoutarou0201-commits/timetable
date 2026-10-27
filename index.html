@@ -63,9 +63,15 @@
             width: 52px;
         }
 
-        input[type="button"] {
+        .cell-box {
+            position: relative;
             width: 100%;
-            height: 72px;
+            min-height: 76px;
+        }
+
+        .subject-btn {
+            width: 100%;
+            height: 76px;
             font-size: 10px;
             cursor: pointer;
             white-space: pre-wrap;
@@ -77,12 +83,35 @@
             transition: background-color 0.2s, transform 0.05s;
             -webkit-appearance: none;
             appearance: none;
-            padding: 4px;
+            padding: 18px 4px 4px 4px;
+            touch-action: manipulation;
+            color: #000;
+        }
+
+        .subject-btn:active,
+        .edit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .edit-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            border: 1px solid #aaa;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            z-index: 2;
             touch-action: manipulation;
         }
 
-        input[type="button"]:active {
-            transform: scale(0.98);
+        .edit-btn:hover {
+            background: #f0f0f0;
         }
 
         .hint {
@@ -90,6 +119,7 @@
             font-size: 11px;
             color: #666;
             margin-top: 8px;
+            line-height: 1.5;
         }
 
         @media screen and (min-width: 768px) {
@@ -113,8 +143,19 @@
                 width: 70px;
             }
 
-            input[type="button"] {
-                height: 78px;
+            .cell-box {
+                min-height: 84px;
+            }
+
+            .subject-btn {
+                height: 84px;
+                font-size: 13px;
+                padding: 20px 6px 6px 6px;
+            }
+
+            .edit-btn {
+                width: 24px;
+                height: 24px;
                 font-size: 13px;
             }
 
@@ -127,8 +168,8 @@
 <body>
     <h1>時間割</h1>
     <h3>
-        短くタップ：出欠確認 / 新規登録<br>
-        長押し：授業名の編集・削除
+        タップ：出欠確認 / 新規登録<br>
+        右上の ✎：授業名の編集・削除
     </h3>
 
     <div class="table-wrap">
@@ -146,57 +187,60 @@
             <tbody>
                 <tr>
                     <th class="period-cell">1限<br>2限</th>
-                    <td><input type="button" id="mon-1" class="savecontrol"></td>
-                    <td><input type="button" id="tue-1" class="savecontrol"></td>
-                    <td><input type="button" id="wed-1" class="savecontrol"></td>
-                    <td><input type="button" id="thu-1" class="savecontrol"></td>
-                    <td><input type="button" id="fri-1" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-1" type="button">✎</button><input type="button" id="mon-1" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-1" type="button">✎</button><input type="button" id="tue-1" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-1" type="button">✎</button><input type="button" id="wed-1" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-1" type="button">✎</button><input type="button" id="thu-1" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-1" type="button">✎</button><input type="button" id="fri-1" class="subject-btn"></div></td>
                 </tr>
                 <tr>
                     <th class="period-cell">3限<br>4限</th>
-                    <td><input type="button" id="mon-2" class="savecontrol"></td>
-                    <td><input type="button" id="tue-2" class="savecontrol"></td>
-                    <td><input type="button" id="wed-2" class="savecontrol"></td>
-                    <td><input type="button" id="thu-2" class="savecontrol"></td>
-                    <td><input type="button" id="fri-2" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-2" type="button">✎</button><input type="button" id="mon-2" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-2" type="button">✎</button><input type="button" id="tue-2" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-2" type="button">✎</button><input type="button" id="wed-2" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-2" type="button">✎</button><input type="button" id="thu-2" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-2" type="button">✎</button><input type="button" id="fri-2" class="subject-btn"></div></td>
                 </tr>
                 <tr>
                     <th class="period-cell">5限<br>6限</th>
-                    <td><input type="button" id="mon-3" class="savecontrol"></td>
-                    <td><input type="button" id="tue-3" class="savecontrol"></td>
-                    <td><input type="button" id="wed-3" class="savecontrol"></td>
-                    <td><input type="button" id="thu-3" class="savecontrol"></td>
-                    <td><input type="button" id="fri-3" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-3" type="button">✎</button><input type="button" id="mon-3" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-3" type="button">✎</button><input type="button" id="tue-3" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-3" type="button">✎</button><input type="button" id="wed-3" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-3" type="button">✎</button><input type="button" id="thu-3" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-3" type="button">✎</button><input type="button" id="fri-3" class="subject-btn"></div></td>
                 </tr>
                 <tr>
                     <th class="period-cell">7限<br>8限</th>
-                    <td><input type="button" id="mon-4" class="savecontrol"></td>
-                    <td><input type="button" id="tue-4" class="savecontrol"></td>
-                    <td><input type="button" id="wed-4" class="savecontrol"></td>
-                    <td><input type="button" id="thu-4" class="savecontrol"></td>
-                    <td><input type="button" id="fri-4" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-4" type="button">✎</button><input type="button" id="mon-4" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-4" type="button">✎</button><input type="button" id="tue-4" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-4" type="button">✎</button><input type="button" id="wed-4" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-4" type="button">✎</button><input type="button" id="thu-4" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-4" type="button">✎</button><input type="button" id="fri-4" class="subject-btn"></div></td>
                 </tr>
                 <tr>
                     <th class="period-cell">9限<br>10限</th>
-                    <td><input type="button" id="mon-5" class="savecontrol"></td>
-                    <td><input type="button" id="tue-5" class="savecontrol"></td>
-                    <td><input type="button" id="wed-5" class="savecontrol"></td>
-                    <td><input type="button" id="thu-5" class="savecontrol"></td>
-                    <td><input type="button" id="fri-5" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-5" type="button">✎</button><input type="button" id="mon-5" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-5" type="button">✎</button><input type="button" id="tue-5" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-5" type="button">✎</button><input type="button" id="wed-5" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-5" type="button">✎</button><input type="button" id="thu-5" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-5" type="button">✎</button><input type="button" id="fri-5" class="subject-btn"></div></td>
                 </tr>
                 <tr>
                     <th class="period-cell">11限<br>12限</th>
-                    <td><input type="button" id="mon-6" class="savecontrol"></td>
-                    <td><input type="button" id="tue-6" class="savecontrol"></td>
-                    <td><input type="button" id="wed-6" class="savecontrol"></td>
-                    <td><input type="button" id="thu-6" class="savecontrol"></td>
-                    <td><input type="button" id="fri-6" class="savecontrol"></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="mon-6" type="button">✎</button><input type="button" id="mon-6" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="tue-6" type="button">✎</button><input type="button" id="tue-6" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="wed-6" type="button">✎</button><input type="button" id="wed-6" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="thu-6" type="button">✎</button><input type="button" id="thu-6" class="subject-btn"></div></td>
+                    <td><div class="cell-box"><button class="edit-btn" data-id="fri-6" type="button">✎</button><input type="button" id="fri-6" class="subject-btn"></div></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="hint">※ PCでは右クリックでも編集できます</div>
+    <div class="hint">
+        ※ コマ本体を押すと出欠確認、新規登録もできます<br>
+        ※ ✎ ボタンで授業名の編集・削除ができます
+    </div>
 
     <script>
         const colorPalette = [
@@ -276,7 +320,7 @@
         function refreshAllButtons() {
             const isMobile = window.innerWidth <= 600;
 
-            Array.from(document.getElementsByClassName("savecontrol")).forEach((btn) => {
+            document.querySelectorAll(".subject-btn").forEach((btn) => {
                 const subjectName = localStorage.getItem(btn.id);
 
                 if (subjectName) {
@@ -298,7 +342,7 @@
                         btn.style.boxShadow = 'none';
                     }
                 } else {
-                    btn.value = "";
+                    btn.value = '';
                     btn.style.backgroundColor = '#ffffff';
                     btn.style.borderColor = '#bbb';
                     btn.style.boxShadow = 'none';
@@ -308,96 +352,20 @@
             });
         }
 
-        function setupLongPress(button, id) {
-            let pressTimer = null;
-            let longPressTriggered = false;
-            let startX = 0;
-            let startY = 0;
-            let startTime = 0;
-            let moved = false;
-            let pointerActive = false;
-
-            const LONG_PRESS_TIME = 800;
-            const MOVE_THRESHOLD = 12;
-            const TAP_MIN_TIME = 80;
-
-            function clearPressTimer() {
-                if (pressTimer) {
-                    clearTimeout(pressTimer);
-                    pressTimer = null;
-                }
-            }
-
-            button.addEventListener('pointerdown', function(e) {
-                if (e.pointerType === 'mouse' && e.button !== 0) return;
-
-                pointerActive = true;
-                longPressTriggered = false;
-                moved = false;
-                startX = e.clientX;
-                startY = e.clientY;
-                startTime = Date.now();
-
-                clearPressTimer();
-
-                pressTimer = setTimeout(() => {
-                    if (!pointerActive || moved) return;
-                    longPressTriggered = true;
-                    editCell(id);
-                }, LONG_PRESS_TIME);
-            });
-
-            button.addEventListener('pointermove', function(e) {
-                if (!pointerActive) return;
-
-                const dx = Math.abs(e.clientX - startX);
-                const dy = Math.abs(e.clientY - startY);
-
-                if (dx > MOVE_THRESHOLD || dy > MOVE_THRESHOLD) {
-                    moved = true;
-                    clearPressTimer();
-                }
-            });
-
-            button.addEventListener('pointerup', function() {
-                if (!pointerActive) return;
-
-                const pressDuration = Date.now() - startTime;
-
-                pointerActive = false;
-                clearPressTimer();
-
-                if (longPressTriggered) {
-                    longPressTriggered = false;
-                    return;
-                }
-
-                if (moved) return;
-                if (pressDuration < TAP_MIN_TIME) return;
-
-                clicked(id);
-            });
-
-            button.addEventListener('pointercancel', function() {
-                pointerActive = false;
-                moved = false;
-                longPressTriggered = false;
-                clearPressTimer();
-            });
-
-            button.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                pointerActive = false;
-                clearPressTimer();
-                editCell(id);
-            });
-        }
-
         function initializeButtons() {
-            const buttons = document.querySelectorAll('.savecontrol');
-            buttons.forEach((btn) => {
-                setupLongPress(btn, btn.id);
+            document.querySelectorAll('.subject-btn').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    clicked(btn.id);
+                });
             });
+
+            document.querySelectorAll('.edit-btn').forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editCell(btn.dataset.id);
+                });
+            });
+
             refreshAllButtons();
         }
 
