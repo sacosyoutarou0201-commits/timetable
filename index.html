@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            margin: 10px;
+            margin: 0;
+            padding: 8px;
             font-family: sans-serif;
             background: #fafafa;
         }
@@ -18,53 +23,61 @@
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 22px;
         }
 
         h3 {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: normal;
             color: #555;
             line-height: 1.5;
         }
 
         .table-wrap {
+            width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 8px;
         }
 
         table {
-            margin: 0 auto;
-            font-size: 16px;
+            width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
             background: #fff;
+            table-layout: fixed;
         }
 
         th, td {
             border: 1px solid #ccc;
-            padding: 4px;
+            padding: 2px;
             text-align: center;
+            vertical-align: middle;
         }
 
         th {
             background: #f5f5f5;
+            font-size: 12px;
+            word-break: keep-all;
+        }
+
+        .period-cell {
+            width: 52px;
         }
 
         input[type="button"] {
-            width: 110px;
-            height: 68px;
-            font-size: 13px;
+            width: 100%;
+            height: 60px;
+            font-size: 10px;
             cursor: pointer;
             white-space: pre-wrap;
-            line-height: 1.25;
+            word-break: break-word;
+            line-height: 1.15;
             border: 1px solid #bbb;
             border-radius: 6px;
             background-color: #ffffff;
             transition: background-color 0.2s, transform 0.05s;
             -webkit-appearance: none;
             appearance: none;
+            padding: 2px;
         }
 
         input[type="button"]:active {
@@ -73,33 +86,39 @@
 
         .hint {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
             margin-top: 8px;
         }
 
-        @media screen and (max-width: 600px) {
+        @media screen and (min-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
             h1 {
-                font-size: 20px;
+                font-size: 26px;
             }
 
             h3 {
-                font-size: 12px;
+                font-size: 14px;
             }
 
-            table {
-                font-size: 14px;
-                min-width: 620px;
+            th {
+                font-size: 15px;
+            }
+
+            .period-cell {
+                width: 70px;
             }
 
             input[type="button"] {
-                width: 95px;
-                height: 60px;
-                font-size: 12px;
+                height: 72px;
+                font-size: 13px;
             }
 
-            th, td {
-                padding: 2px;
+            .hint {
+                font-size: 12px;
             }
         }
     </style>
@@ -115,7 +134,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>時間/曜日</th>
+                    <th class="period-cell">時間<br>/曜日</th>
                     <th>月曜</th>
                     <th>火曜</th>
                     <th>水曜</th>
@@ -125,7 +144,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>1限<br>2限</th>
+                    <th class="period-cell">1限<br>2限</th>
                     <td><input type="button" id="mon-1" class="savecontrol"></td>
                     <td><input type="button" id="tue-1" class="savecontrol"></td>
                     <td><input type="button" id="wed-1" class="savecontrol"></td>
@@ -133,7 +152,7 @@
                     <td><input type="button" id="fri-1" class="savecontrol"></td>
                 </tr>
                 <tr>
-                    <th>3限<br>4限</th>
+                    <th class="period-cell">3限<br>4限</th>
                     <td><input type="button" id="mon-2" class="savecontrol"></td>
                     <td><input type="button" id="tue-2" class="savecontrol"></td>
                     <td><input type="button" id="wed-2" class="savecontrol"></td>
@@ -141,7 +160,7 @@
                     <td><input type="button" id="fri-2" class="savecontrol"></td>
                 </tr>
                 <tr>
-                    <th>5限<br>6限</th>
+                    <th class="period-cell">5限<br>6限</th>
                     <td><input type="button" id="mon-3" class="savecontrol"></td>
                     <td><input type="button" id="tue-3" class="savecontrol"></td>
                     <td><input type="button" id="wed-3" class="savecontrol"></td>
@@ -149,7 +168,7 @@
                     <td><input type="button" id="fri-3" class="savecontrol"></td>
                 </tr>
                 <tr>
-                    <th>7限<br>8限</th>
+                    <th class="period-cell">7限<br>8限</th>
                     <td><input type="button" id="mon-4" class="savecontrol"></td>
                     <td><input type="button" id="tue-4" class="savecontrol"></td>
                     <td><input type="button" id="wed-4" class="savecontrol"></td>
@@ -157,7 +176,7 @@
                     <td><input type="button" id="fri-4" class="savecontrol"></td>
                 </tr>
                 <tr>
-                    <th>9限<br>10限</th>
+                    <th class="period-cell">9限<br>10限</th>
                     <td><input type="button" id="mon-5" class="savecontrol"></td>
                     <td><input type="button" id="tue-5" class="savecontrol"></td>
                     <td><input type="button" id="wed-5" class="savecontrol"></td>
@@ -165,7 +184,7 @@
                     <td><input type="button" id="fri-5" class="savecontrol"></td>
                 </tr>
                 <tr>
-                    <th>11限<br>12限</th>
+                    <th class="period-cell">11限<br>12限</th>
                     <td><input type="button" id="mon-6" class="savecontrol"></td>
                     <td><input type="button" id="tue-6" class="savecontrol"></td>
                     <td><input type="button" id="wed-6" class="savecontrol"></td>
@@ -179,7 +198,6 @@
     <div class="hint">※ PCでは右クリックでも編集できます</div>
 
     <script>
-        // ===== 色設定 =====
         const colorPalette = [
             '#e1f5fe', '#f3e5f5', '#efebe9', '#e8f5e9', '#fff3e0',
             '#fce4ec', '#f0f4c3', '#e0f2f1', '#e8eaf6', '#ede7f6',
@@ -196,7 +214,6 @@
             return colorPalette[index];
         }
 
-        // ===== 通常タップ / 左クリック =====
         function clicked(id) {
             const savedName = localStorage.getItem(id) || '';
 
@@ -215,7 +232,6 @@
             }
         }
 
-        // ===== 編集・削除 =====
         function editCell(id) {
             const savedName = localStorage.getItem(id) || '';
 
@@ -243,7 +259,6 @@
                     localStorage.removeItem(id);
                     localStorage.removeItem(`att-absent-${savedName}`);
                 } else {
-                    // 名前変更時、欠席データを引き継ぐ
                     const oldAbsent = localStorage.getItem(`att-absent-${savedName}`);
                     localStorage.setItem(id, trimmedInput);
 
@@ -257,15 +272,19 @@
             }
         }
 
-        // ===== 表示更新 =====
         function refreshAllButtons() {
+            const isMobile = window.innerWidth <= 600;
+
             Array.from(document.getElementsByClassName("savecontrol")).forEach((btn) => {
                 const subjectName = localStorage.getItem(btn.id);
 
                 if (subjectName) {
                     const absentCount = localStorage.getItem(`att-absent-${subjectName}`) || 0;
 
-                    btn.value = `${subjectName}\n(欠席:${absentCount}回)`;
+                    btn.value = isMobile
+                        ? `${subjectName}\n欠:${absentCount}`
+                        : `${subjectName}\n(欠席:${absentCount}回)`;
+
                     btn.style.backgroundColor = getSubjectColor(subjectName);
                     btn.style.color = '#000';
                     btn.style.fontWeight = 'bold';
@@ -288,11 +307,10 @@
             });
         }
 
-        // ===== 長押し対応 =====
         function setupLongPress(button, id) {
             let pressTimer = null;
             let longPressTriggered = false;
-            const LONG_PRESS_TIME = 600; // 0.6秒
+            const LONG_PRESS_TIME = 600;
 
             function startPress() {
                 longPressTriggered = false;
@@ -307,15 +325,13 @@
                 clearTimeout(pressTimer);
             }
 
-            // スマホ用
-            button.addEventListener('touchstart', function(e) {
+            button.addEventListener('touchstart', function() {
                 startPress();
             }, { passive: true });
 
             button.addEventListener('touchend', function(e) {
                 clearTimeout(pressTimer);
 
-                // 長押し後は通常クリック動作を止める
                 if (longPressTriggered) {
                     e.preventDefault();
                     longPressTriggered = false;
@@ -332,21 +348,17 @@
                 cancelPress();
             });
 
-            // PC左クリック
-            button.addEventListener('click', function(e) {
-                // touchendで処理済みの二重実行を避ける
+            button.addEventListener('click', function() {
                 if ('ontouchstart' in window) return;
                 clicked(id);
             });
 
-            // PC右クリック
             button.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 cancelPress();
                 editCell(id);
             });
 
-            // マウス長押しでも編集できるようにする（おまけ）
             button.addEventListener('mousedown', function(e) {
                 if (e.button === 0) startPress();
             });
@@ -360,7 +372,6 @@
             });
         }
 
-        // ===== 初期化 =====
         function initializeButtons() {
             const buttons = document.querySelectorAll('.savecontrol');
             buttons.forEach((btn) => {
@@ -371,6 +382,7 @@
 
         window.addEventListener("load", initializeButtons);
         window.addEventListener("focus", refreshAllButtons);
+        window.addEventListener("resize", refreshAllButtons);
     </script>
 </body>
 </html>
